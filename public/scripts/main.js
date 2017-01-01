@@ -21,4 +21,9 @@ if (navigator.serviceWorker) {
             // TODO
         });
     });
+
+    // Refresh the page if the controlling service working changes to refresh cache assets
+    navigator.serviceWorker.addEventListener('controllerchange', function () {
+        window.location.reload();
+    });
 }
