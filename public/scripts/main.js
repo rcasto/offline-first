@@ -1,7 +1,7 @@
 // Register service worker if browser supports it
 if (navigator.serviceWorker) {
     navigator.serviceWorker.register('/sw.js').then(function (reg) {
-        // Page not currently controlled by service worker, by default has latest
+        // Page not currently controlled by service worker, by default will have latest
         if (!navigator.serviceWorker.controller) {
             return;
         }
@@ -11,7 +11,7 @@ if (navigator.serviceWorker) {
             // TODO
         }
 
-        // If there is a new service worker being installed, track it, and notify user on successful installed
+        // If there is a new service worker being installed, track it, and notify user on successful install
         if (reg.installing) {
             // TODO
         }
@@ -22,7 +22,7 @@ if (navigator.serviceWorker) {
         });
     });
 
-    // Refresh the page if the controlling service working changes to refresh cache assets
+    // Refresh the page if the controlling service worker changes to refresh cache assets
     navigator.serviceWorker.addEventListener('controllerchange', function () {
         window.location.reload();
     });
