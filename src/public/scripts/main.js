@@ -27,3 +27,7 @@ if (navigator.serviceWorker) {
         window.location.reload();
     });
 }
+
+import blah from './foo.js';
+
+console.log('test val:', blah);

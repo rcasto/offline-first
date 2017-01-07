@@ -4,11 +4,21 @@
   "description": "learning about service workers and offline first",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prestart": "gulp",
+    "start": "node server.js"
   },
   "author": "Richie Casto",
   "license": "ISC",
   "dependencies": {
     "express": "^4.14.0"
+  },
+  "devDependencies": {
+    "babel-preset-es2015-rollup": "^3.0.0",
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "rollup": "^0.41.1",
+    "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-json": "^2.1.0",
+    "run-sequence": "^1.2.2"
   }
 }

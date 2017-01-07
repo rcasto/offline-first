@@ -4,7 +4,7 @@ self.addEventListener('install', function (event) {
     caches.open(staticCacheName).then(function (cache) {
         return cache.addAll([
             '/',
-            'scripts/main.js'
+            'scripts/bundle.js'
         ]);
     });
 });
