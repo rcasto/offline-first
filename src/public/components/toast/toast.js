@@ -1,12 +1,7 @@
 import ToastView from './toast.html';
+import Helpers from '../../scripts/helpers.js';
 
-console.log('View:', ToastView, typeof ToastView);
-
-var compiledView = document.createElement('div');
-compiledView.innerHTML = ToastView;
-
-var ToastTemplate = compiledView.querySelector('.toast');
-console.log('Template:', ToastTemplate, ToastTemplate.content.cloneNode(true));
+const ToastTemplate = Helpers.compileHtmlString(ToastView).querySelector('.toast');
 
 /*
     When this script is run, it should be in the context of the HTML import it was brought in with.
@@ -17,6 +12,12 @@ console.log('Template:', ToastTemplate, ToastTemplate.content.cloneNode(true));
 class Toast extends HTMLElement {
     constructor() {
         super(); // always call super() first in the ctor.
+
+        var shadowRoot = this.attachShadow({
+            mode: 'open'
+        });
+
+        shadowRoot.appendChild(ToastTemplate.content.cloneNode(true));
     }
     connectedCallback() {
         console.log('Toast Notification added to DOM');
