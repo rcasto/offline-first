@@ -1,3 +1,5 @@
+import Toast from '../components/toast/toast.js';
+
 // Register service worker if browser supports it
 if (navigator.serviceWorker) {
     navigator.serviceWorker.register('/sw.js').then(function (reg) {
@@ -28,6 +30,10 @@ if (navigator.serviceWorker) {
     });
 }
 
-import blah from './foo.js';
+// Register the toast notification, if supported
+if (window.customElements && window.customElements.define) {
+    window.customElements.define('toast-notification', Toast);
 
-console.log('test val:', blah);
+    var toastElem = document.createElement('toast-notification');
+    console.log('Toast Element:', toastElem);
+}

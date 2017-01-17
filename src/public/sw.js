@@ -3,8 +3,7 @@ var staticCacheName = 'offline-first-v1';
 self.addEventListener('install', function (event) {
     caches.open(staticCacheName).then(function (cache) {
         return cache.addAll([
-            '/',
-            'scripts/bundle.js'
+            '/'
         ]);
     });
 });
