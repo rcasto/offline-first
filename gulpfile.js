@@ -4,7 +4,6 @@ var runSequence = require('run-sequence');
 var merge = require('merge-stream');
 
 var rollup = require('rollup');
-var rollupJSON  = require('rollup-plugin-json');
 var rollupBabel = require('rollup-plugin-babel');
 var rollupHtml = require('rollup-plugin-html');
 
@@ -18,7 +17,6 @@ gulp.task('build', function () {
                     './toast.html'
                 ]
             }),
-            rollupJSON(), 
             rollupBabel({
                 presets: [
                     [
