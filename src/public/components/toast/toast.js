@@ -22,12 +22,12 @@ class Toast extends HTMLElement {
     }
     setMessage(message) {
         if (this.shadowRoot) {
-            appendText.call(this, '.toast-message', message);
+            Helpers.appendText(this.shadowRoot, '.toast-message', message);
         }
     }
     setAction(action) {
         if (this.shadowRoot) {
-            appendText.call(this, '.toast-action', action);
+            Helpers.appendText(this.shadowRoot, '.toast-action', action);
         }
     }
     disconnectedCallback() {
@@ -44,12 +44,6 @@ class Toast extends HTMLElement {
             this.setAction(this.getAttribute('data-action'));
         }
     }
-}
-
-function appendText(selector, text) {
-    var selectorElem = this.shadowRoot.querySelector(selector);
-    var textElem = document.createTextNode(text);
-    selectorElem.appendChild(textElem);
 }
 
 export default Toast;

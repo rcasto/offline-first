@@ -4,6 +4,13 @@ function compileHtmlString(htmlStr) {
     return div;
 }
 
+function appendText(contextNode, selector, text) {
+    var selectorElem = contextNode.querySelector(selector);
+    var textElem = document.createTextNode(text);
+    selectorElem.appendChild(textElem);
+}
+
 export default {
-    compileHtmlString
+    compileHtmlString,
+    appendText
 }
