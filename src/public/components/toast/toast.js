@@ -3,31 +3,53 @@ import Helpers from '../../scripts/helpers.js';
 
 const ToastTemplate = Helpers.compileHtmlString(ToastView).querySelector('.toast');
 
-/*
-    When this script is run, it should be in the context of the HTML import it was brought in with.
-    This means it should be able to get access to it's template external to itself.  Meaning it does
-    not have to be defined in this file, along with the behavior of the component.  A better separation
-    of concerns
-*/
 class Toast extends HTMLElement {
     constructor() {
         super(); // always call super() first in the ctor.
-
-        var shadowRoot = this.attachShadow({
-            mode: 'open'
-        });
-
-        shadowRoot.appendChild(ToastTemplate.content.cloneNode(true));
     }
     connectedCallback() {
         console.log('Toast Notification added to DOM');
+
+        // Create Shadow DOM and attach template clone
+        this.attachShadow({
+            mode: 'open'
+        });
+        this.shadowRoot.appendChild(ToastTemplate.content.cloneNode(true));
+
+        // Fetch initial attribute values
+        this.setMessage(this.getAttribute('data-message'));
+        this.setAction(this.getAttribute('data-action'));
+    }
+    setMessage(message) {
+        if (this.shadowRoot) {
+            appendText.call(this, '.toast-message', message);
+        }
+    }
+    setAction(action) {
+        if (this.shadowRoot) {
+            appendText.call(this, '.toast-action', action);
+        }
     }
     disconnectedCallback() {
         console.log('Toast Notification removed from DOM');
     }
+    // Need to update the template on an attribute being updated
     attributeChangedCallback(attrName, oldVal, newVal) {
         console.log(`Attribute ${attr} changed from ${oldVal} -> ${newVal}`);
+
+        if (attrName === 'data-message') {
+            this.setMessage(this.getAttribute('data-message'));
+        }
+        if (attrName === 'data-action') {
+            this.setAction(this.getAttribute('data-action'));
+        }
     }
+}
+
+function appendText(selector, text) {
+    var selectorElem = this.shadowRoot.querySelector(selector);
+    var textElem = document.createTextNode(text);
+    selectorElem.appendChild(textElem);
 }
 
 export default Toast;

@@ -1,13 +1,26 @@
 <!DOCTYPE html>
-
 <html>
     <head>
         <title>Offline First - Service Workers</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            *, *::before, *:after {
+                box-sizing: border-box;
+            }
+            html, body {
+                padding: 0;
+                margin: 0;
+                border: 0;
+            }
+        </style>
     </head>
     <body>
         <div class="app-header">
             App Header
+            <toast-notification
+                data-message="New version available"
+                data-action="Reload to update"
+            ></toast-notification>
         </div>
         <!--Libraries-->
         <script type="text/javascript" src="scripts/lib/full.js"></script>

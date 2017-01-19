@@ -50,12 +50,12 @@ gulp.task('copy', function () {
     );
 });
 
-gulp.task('clean:output', function () {
+gulp.task('clean', function () {
     return del([
         'dist/**/*'
     ]);
 });
 
 gulp.task('default', function () {
-    return runSequence('clean:output', ['build', 'copy']);
+    return runSequence('clean', ['build', 'copy']);
 });

@@ -1,4 +1,45 @@
 <template class="toast">
-    <!--Put view here-->
+    <div class="toast-container">
+        <div class="toast-info">
+            <div class="toast-message"></div>
+            <button class="toast-action"></button>
+        </div>
+        <button class="toast-dismiss">X</button>
+    </div>
+    <style>
+        *, *:before, *:after {
+            box-sizing: border-box;
+        }
+        .toast-container {
+            position: fixed;
+            bottom: 12px;
+            left: 12px;
+            z-index: 1;
+            background-color: #87909e;
+            border: 3px solid #5b5e63;
+            border-radius: 4px;
+            padding: 8px;
+        }
+        .toast-info {
+            margin-right: 43px;
+        }
+        .toast-message {
+            margin-bottom: 3px;
+        }
+        .toast-action {
+            border: 0;
+            margin: 0;
+            padding: 0;
+            color: #0645AD;
+            background-color: inherit;
+        }
+        .toast-dismiss {
+            position: absolute;
+            top: 3px;
+            right: 3px;
+            width: 32px;
+            background-color: inherit;
+            border: 0;
+        }
+    </style>
 </template>
-<link rel="stylesheet" href="toast.css" />

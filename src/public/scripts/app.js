@@ -23,7 +23,7 @@ if (navigator.serviceWorker) {
             // TODO
         });
     });
-
+    
     // Refresh the page if the controlling service worker changes to refresh cache assets
     navigator.serviceWorker.addEventListener('controllerchange', function () {
         window.location.reload();
@@ -33,7 +33,4 @@ if (navigator.serviceWorker) {
 // Register the toast notification, if supported
 if (window.customElements && window.customElements.define) {
     window.customElements.define('toast-notification', Toast);
-
-    var toastElem = document.createElement('toast-notification');
-    console.log('Toast Element:', toastElem);
 }
