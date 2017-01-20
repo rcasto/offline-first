@@ -4,7 +4,9 @@
             <div class="toast-message"></div>
             <button class="toast-action"></button>
         </div>
-        <button class="toast-dismiss">X</button>
+        <button class="toast-dismiss">
+            <span>X</span>
+        </button>
     </div>
     <style>
         *, *:before, *:after {
@@ -15,31 +17,48 @@
             bottom: 12px;
             left: 12px;
             z-index: 1;
-            background-color: #87909e;
+            background-color: #C6C7C8;
+            padding: 8px;
             border: 3px solid #5b5e63;
             border-radius: 4px;
-            padding: 8px;
         }
         .toast-info {
-            margin-right: 43px;
+            margin-right: 32px;
         }
         .toast-message {
             margin-bottom: 3px;
+            font-size: 1.1em;
         }
         .toast-action {
-            border: 0;
+            padding: 3px;
+            border: 3px solid #1258CE;
+            border-radius: 8px;
             margin: 0;
-            padding: 0;
-            color: #0645AD;
-            background-color: inherit;
+            color: white;
+            background-color: #5C8AD9;
+        }
+        .toast-action:hover, .toast-action:focus, .toast-action:active {
+            color: #0A409C;
+            border-color: #0A409C;
         }
         .toast-dismiss {
             position: absolute;
             top: 3px;
             right: 3px;
-            width: 32px;
+            width: 20px;
+            height: 20px;
             background-color: inherit;
-            border: 0;
+            border: 1px solid #5b5e63;
+            border-radius: 50%;
+            padding: 0;
+            font-weight: bold;
+            opacity: 0.7;
+        }
+        .toast-dismiss:hover, .toast-dismiss:focus, .toast-dismiss:active {
+            opacity: 1;
+        }
+        .toast-dismiss span {
+            color: #5b5e63;
         }
     </style>
 </template>

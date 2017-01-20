@@ -34,7 +34,10 @@ if (navigator.serviceWorker) {
 if (window.customElements && window.customElements.define) {
     window.customElements.define('toast-notification', Toast);
 
-    document.body.addEventListener('toast-dismissed', () => {
+    document.body.addEventListener('toast-dismiss', () => {
         console.log('A toast was dismissed!');
+    }, false);
+    document.body.addEventListener('toast-action', () => {
+        console.log('Toast action was taken!');
     }, false);
 }

@@ -2,7 +2,12 @@ import ToastView from './toast.html';
 import Helpers from '../../scripts/helpers.js';
 
 const ToastTemplate = Helpers.compileHtmlString(ToastView).querySelector('.toast');
-const dismissEvent = new Event('toast-dismissed', {
+const dismissEvent = new Event('toast-dismiss', {
+    bubbles: true,
+    composed: true,
+    cancelable: true
+});
+const actionEvent = new Event('toast-action', {
     bubbles: true,
     composed: true,
     cancelable: true
@@ -28,10 +33,11 @@ class Toast extends HTMLElement {
 
         // Add event listeners
         this.dismissElem.addEventListener('click', (event) => {
-            console.log('Dismiss button was clicked!');
-            // Output 'toast-dismissed' event
             this.dispatchEvent(dismissEvent);
         }, false);
+        this.actionElem.addEventListener('click', (event) => {
+            this.dispatchEvent(actionEvent);
+        });
 
         // Fetch initial attribute values
         this.setMessage(this.getAttribute('data-message'));
