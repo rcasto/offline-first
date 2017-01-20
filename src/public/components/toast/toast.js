@@ -33,6 +33,7 @@ class Toast extends HTMLElement {
 
         // Add event listeners
         this.dismissElem.addEventListener('click', (event) => {
+            this.hidden = true;
             this.dispatchEvent(dismissEvent);
         }, false);
         this.actionElem.addEventListener('click', (event) => {

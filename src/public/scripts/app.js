@@ -39,5 +39,6 @@ if (window.customElements && window.customElements.define) {
     }, false);
     document.body.addEventListener('toast-action', () => {
         console.log('Toast action was taken!');
+        window.location.reload();
     }, false);
 }
