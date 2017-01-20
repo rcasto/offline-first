@@ -4,10 +4,9 @@ function compileHtmlString(htmlStr) {
     return div;
 }
 
-function appendText(contextNode, selector, text) {
-    var selectorElem = contextNode.querySelector(selector);
+function appendText(targetNode, text) {
     var textElem = document.createTextNode(text);
-    selectorElem.appendChild(textElem);
+    targetNode.appendChild(textElem);
 }
 
 export default {

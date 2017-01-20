@@ -2,6 +2,11 @@ import ToastView from './toast.html';
 import Helpers from '../../scripts/helpers.js';
 
 const ToastTemplate = Helpers.compileHtmlString(ToastView).querySelector('.toast');
+const dismissEvent = new Event('toast-dismissed', {
+    bubbles: true,
+    composed: true,
+    cancelable: true
+});
 
 class Toast extends HTMLElement {
     constructor() {
@@ -16,18 +21,30 @@ class Toast extends HTMLElement {
         });
         this.shadowRoot.appendChild(ToastTemplate.content.cloneNode(true));
 
+        // Find a cache variable elements
+        this.dismissElem = this.shadowRoot.querySelector('.toast-dismiss');
+        this.messageElem = this.shadowRoot.querySelector('.toast-message');
+        this.actionElem = this.shadowRoot.querySelector('.toast-action');
+
+        // Add event listeners
+        this.dismissElem.addEventListener('click', (event) => {
+            console.log('Dismiss button was clicked!');
+            // Output 'toast-dismissed' event
+            this.dispatchEvent(dismissEvent);
+        }, false);
+
         // Fetch initial attribute values
         this.setMessage(this.getAttribute('data-message'));
         this.setAction(this.getAttribute('data-action'));
     }
     setMessage(message) {
-        if (this.shadowRoot) {
-            Helpers.appendText(this.shadowRoot, '.toast-message', message);
+        if (this.messageElem) {
+            Helpers.appendText(this.messageElem, message);
         }
     }
     setAction(action) {
-        if (this.shadowRoot) {
-            Helpers.appendText(this.shadowRoot, '.toast-action', action);
+        if (this.actionElem) {
+            Helpers.appendText(this.actionElem, action);
         }
     }
     disconnectedCallback() {

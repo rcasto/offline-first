@@ -33,4 +33,8 @@ if (navigator.serviceWorker) {
 // Register the toast notification, if supported
 if (window.customElements && window.customElements.define) {
     window.customElements.define('toast-notification', Toast);
+
+    document.body.addEventListener('toast-dismissed', () => {
+        console.log('A toast was dismissed!');
+    }, false);
 }
