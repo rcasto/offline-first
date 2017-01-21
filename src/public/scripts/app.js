@@ -55,12 +55,9 @@ function updateReady(worker) {
         worker.postMessage({
             action: 'skipWaiting'
         });
-        window.location.reload();
     });
     toastContainer.appendChild(toast);
 }
-
-// Next web component take video and form preview gif
 
 // Make a container element to store toasts in
 function createToast(message, action) {
