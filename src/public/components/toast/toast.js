@@ -62,10 +62,10 @@ class Toast extends HTMLElement {
         console.log(`Attribute ${attr} changed from ${oldVal} -> ${newVal}`);
 
         if (attrName === 'data-message') {
-            this.setMessage(this.getAttribute('data-message'));
+            this.setMessage(newVal);
         }
         if (attrName === 'data-action') {
-            this.setAction(this.getAttribute('data-action'));
+            this.setAction(newVal);
         }
     }
 }
