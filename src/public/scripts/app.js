@@ -55,6 +55,7 @@ function updateReady(worker) {
         worker.postMessage({
             action: 'skipWaiting'
         });
+        window.location.reload();
     });
     toastContainer.appendChild(toast);
 }
