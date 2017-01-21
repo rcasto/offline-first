@@ -26,7 +26,7 @@ class Toast extends HTMLElement {
         });
         this.shadowRoot.appendChild(ToastTemplate.content.cloneNode(true));
 
-        // Find a cache variable elements
+        // Find and cache variable elements
         this.dismissElem = this.shadowRoot.querySelector('.toast-dismiss');
         this.messageElem = this.shadowRoot.querySelector('.toast-message');
         this.actionElem = this.shadowRoot.querySelector('.toast-action');

@@ -12,16 +12,27 @@
                 margin: 0;
                 border: 0;
             }
+            .app {
+                padding: 12px;
+                margin: 8px 8px 0 8px;
+                border: 1px solid black;
+            }
+            .app-header {
+                text-align: center;
+            }
+            .app-content {
+                display: block;
+                max-width: 120px;
+                margin: 0 auto;
+            }
         </style>
     </head>
     <body>
-        <div class="app-header">
-            App Header
-            <toast-notification
-                data-message="New version available"
-                data-action="Reload to update"
-            ></toast-notification>
+        <div class="app">
+            <div class="app-header">App</div>
+            <img class="app-content" src="images/mug.svg" alt="Coffee mug">
         </div>
+        <div class="toast-container"></div>
         <!--Libraries-->
         <script type="text/javascript" src="scripts/lib/full.js"></script>
         <script type="text/javascript" src="scripts/lib/native-shim.min.js"></script>

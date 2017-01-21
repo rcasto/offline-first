@@ -44,5 +44,7 @@ self.addEventListener('fetch', function (event) {
 });
 
 self.addEventListener('message', function (event) {
-    // TODO
+    if (event.data.action === 'skipWaiting') {
+        self.skipWaiting();
+    }
 });

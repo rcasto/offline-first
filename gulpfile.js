@@ -39,7 +39,8 @@ gulp.task('copy', function () {
         gulp.src([
             'src/public/scripts/lib/*.js',
             'src/public/index.html',
-            'src/public/sw.js'
+            'src/public/sw.js',
+            'src/public/images/*.svg'
         ], {
             base: 'src'
         })
