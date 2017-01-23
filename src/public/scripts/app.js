@@ -1,4 +1,5 @@
 import Toast from '../components/toast/toast.js';
+import VideoGif from '../components/video-gif/video-gif.js';
 
 var updateMessage = 'New version available';
 var updateAction = 'Reload to update';
@@ -70,4 +71,5 @@ function createToast(message, action) {
 // Register the toast notification, if supported
 if (window.customElements && window.customElements.define) {
     window.customElements.define('toast-notification', Toast);
+    window.customElements.define('video-gif', VideoGif);
 }

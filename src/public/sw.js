@@ -7,7 +7,9 @@ self.addEventListener('install', function (event) {
             '/images/mug.svg',
             '/scripts/lib/full.js',
             '/scripts/lib/native-shim.min.js',
-            '/scripts/app.js'
+            '/scripts/app.js',
+            '/images/test-video.mp4',
+            // '/images/the-dictator.mp4'
         ]);
     });
 });
