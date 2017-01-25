@@ -1,6 +1,8 @@
 import Toast from '../components/toast/toast.js';
 import VideoGif from '../components/video-gif/video-gif.js';
 
+import fetchVideo from './fetchVideo.js';
+
 var updateMessage = 'New version available';
 var updateAction = 'Reload to update';
 
