@@ -2,11 +2,9 @@ function onError(error) {
     console.error(JSON.stringify(error));
 }
 
-function mergeDataChunks(chunks, chunk) {
-    var tmp = new Uint8Array(chunks.length + chunk.length);
-    tmp.set(chunks);
-    tmp.set(chunk, chunks.length);
-    return tmp;
+function mergeDataChunks(chunks, chunk, start) {
+    chunks.set(chunk, start);
+    return chunks;
 }
 
 function chunksToObjectUrl(chunks, mime) {
@@ -112,23 +110,25 @@ fetch('/images/test-video.mp4')
         var contentLength = Number.parseInt(response.headers.get('Content-Length'), 10);
         var reader = response.body.getReader();
 
-        var videoData = new Uint8Array();
+        var videoData = new Uint8Array(contentLength);
         var frames = [];
         var numFrames = 12;
         var bytesPerFrame = Math.floor(contentLength / numFrames);
         var frameRatio = bytesPerFrame / contentLength;
         var currentFrame = 0;
+        var bytesRead = 0;
 
         reader.read().then(function readChunk(chunk) {
             if (chunk.done) {
                 return;
             }
 
-            videoData = mergeDataChunks(videoData, chunk.value);
+            videoData = mergeDataChunks(videoData, chunk.value, bytesRead);
+            bytesRead += chunk.value.byteLength;
 
-            if (videoData.length >= (currentFrame + 1) * bytesPerFrame) {
+            if (bytesRead >= (currentFrame + 1) * bytesPerFrame) {
                 let i = currentFrame;
-                let url = chunksToObjectUrl([videoData], 'video/mp4');
+                let url = chunksToObjectUrl([videoData.slice(0, bytesRead)], 'video/mp4');
 
                 loadVideo(url)
                     .then((video) => {
@@ -136,6 +136,7 @@ fetch('/images/test-video.mp4')
                         return captureVideoFrame(video, time);
                     })
                     .then((frame) => {
+                        window.URL.revokeObjectURL(url);
                         frames.push({
                             i: i,
                             frame: frame
@@ -150,7 +151,6 @@ fetch('/images/test-video.mp4')
                         }
                     })
                     .catch(onError);
-
                 currentFrame++;
             }
 
