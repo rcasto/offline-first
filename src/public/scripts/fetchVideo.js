@@ -16,8 +16,29 @@ function chunksToObjectUrl(chunks, mime) {
     return window.URL.createObjectURL(blob);
 }
 
-function captureVideoFrame(url) {
-    return loadVideo(url).then(drawAndGrabVideoFrame);
+function captureVideoFrame(video, time) {
+    return seekTo(video, time).then(drawAndGrabVideoFrame);
+}
+
+function collectFrames(numFrames) {
+    var frames = [];
+    return function (frame) {
+        return new Promise((resolve, reject) => {
+            frames.push({
+                i: i,
+                frame: frame
+            });
+            numFrames--;
+            if (numFrames <= 0) {
+                let preview = createPreview(frames.sort((a, b) => {
+                    return a.i - b.i;
+                }).map((obj) => {
+                    return obj.frame;
+                }), 400);
+                resolve(preview);
+            }
+        });
+    };
 }
 
 function drawAndGrabVideoFrame(video) {
@@ -32,7 +53,6 @@ function loadVideo(url) {
         var video = document.createElement('video');
         video.src = url;
         video.addEventListener('loadeddata', function load() {
-            console.log('Video loaded');
             video.removeEventListener('loadeddata', load);
             video.removeEventListener('error', onError);
             resolve(video);
@@ -41,33 +61,47 @@ function loadVideo(url) {
     });
 }
 
-function doneSeeking(video) {
+function seekTo(video, time) {
     return new Promise((resolve, reject) => {
+        video.currentTime = time;
         if (video.seeking) {
             video.addEventListener('seeked', function seek() {
-                console.log('Video done seeking');
                 video.removeEventListener('seeked', seek);
-                resolve();
+                resolve(video);
             });
         } else {
-            resolve();
+            resolve(video);
         }
     });
 }
 
-function createPreview(frames) {
+function createPreview(frames, frameDelay) {
     var canvas = document.createElement('canvas');
     var context = canvas.getContext('2d');
+    var currentFrame = 0;
+    var animateId;
 
     // initialize
-    context.putImageData(frames[0], 0, 0);
+    context.putImageData(frames[currentFrame], 0, 0);
 
     // Add animate handlers
     canvas.addEventListener('mouseover', () => {
-
+        var lastUpdate;
+        animateId = window.requestAnimationFrame(function _anim(time) {
+            if (!lastUpdate || time - lastUpdate > frameDelay) {
+                if (currentFrame + 1 >= frames.length) {
+                    currentFrame = 0;
+                } else {
+                    currentFrame++;
+                }
+                context.putImageData(frames[currentFrame], 0, 0);
+                lastUpdate = time;
+            }
+            animateId = window.requestAnimationFrame(_anim);
+        });
     });
     canvas.addEventListener('mouseout', () => {
-
+        window.cancelAnimationFrame(animateId);
     });
 
     return canvas;
@@ -78,51 +112,46 @@ fetch('/images/test-video.mp4')
         var contentLength = Number.parseInt(response.headers.get('Content-Length'), 10);
         var reader = response.body.getReader();
 
-        var frames = [];
         var videoData = new Uint8Array();
+        var frames = [];
         var numFrames = 12;
-        var bytesRead = 0;
-        var bytesPerFrame = contentLength / numFrames
-        var percentDone;
-        var currentFrame = 1;
-    
-        console.log('Starting to read stream:', bytesPerFrame);
+        var bytesPerFrame = Math.floor(contentLength / numFrames);
+        var frameRatio = bytesPerFrame / contentLength;
+        var currentFrame = 0;
 
         reader.read().then(function readChunk(chunk) {
             if (chunk.done) {
-                console.log('Finished reading stream', bytesRead, bytesPerFrame * numFrames, currentFrame);
                 return;
             }
 
-            bytesRead += chunk.value.byteLength;
-            percentDone = (bytesRead / contentLength) * 100;
             videoData = mergeDataChunks(videoData, chunk.value);
 
-            var start = 0;
-            if (videoData.length > currentFrame * bytesPerFrame) {
-                console.log('Process the frame..man');
-                let end = start + bytesPerFrame;
+            if (videoData.length >= (currentFrame + 1) * bytesPerFrame) {
                 let i = currentFrame;
-                captureVideoFrame(
-                    chunksToObjectUrl([videoData.slice(start, end)])
-                ).then((frame) => {
-                    console.log('Frame data:', frame);
-                    frames.push({
-                        i: i,
-                        frame: frame
-                    });
-                    if (i >= numFrames - 1) {
-                        console.log('job done');
-                        let preview = createPreview(frames.sort((a, b) => {
-                            return a.i - b.i;
-                        }).map((obj) => {
-                            return obj.frame;
-                        }));
-                        document.body.appendChild(preview);
-                    }
-                });
+                let url = chunksToObjectUrl([videoData], 'video/mp4');
+
+                loadVideo(url)
+                    .then((video) => {
+                        var time = frameRatio * video.duration * i;
+                        return captureVideoFrame(video, time);
+                    })
+                    .then((frame) => {
+                        frames.push({
+                            i: i,
+                            frame: frame
+                        });
+                        if (i >= numFrames - 1) {
+                            let preview = createPreview(frames.sort((a, b) => {
+                                return a.i - b.i;
+                            }).map((obj) => {
+                                return obj.frame;
+                            }), 400);
+                            document.body.appendChild(preview);
+                        }
+                    })
+                    .catch(onError);
+
                 currentFrame++;
-                start += bytesPerFrame;
             }
 
             reader.read().then(readChunk, onError);
